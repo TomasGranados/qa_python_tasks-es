@@ -4,15 +4,16 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 
 driver = webdriver.Chrome()
-driver.get("https://www.saucedemo.com/v1/")
 
-# Pausa la ejecución durante 5 segundos para permitir que la página se cargue correctamente
+driver.get("https://around-v1.nm.tripleten-services.com/signin?lng=es")
+
 time.sleep(5)
 
-# Para buscar un elemento
-element = driver.find_element(By.XPATH, ".//img")
-print(element)
+# Buscar el título
+title_element = driver.find_element(By.CSS_SELECTOR, ".auth-form__title")
 
-# Para buscar un grupo de elementos
-elements = driver.find_elements(By.XPATH, ".//input")
-print(elements)
+# Busc ar e imprimir la linea con el texto
+print("Login form title:", title_element.text)
+
+# Cerrar el navegador
+driver.quit()
