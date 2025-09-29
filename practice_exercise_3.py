@@ -1,22 +1,23 @@
-import time
-
-from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium import webdriver
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions
 
 driver = webdriver.Chrome()
-
 driver.get("https://around-v1.nm.tripleten-services.com/signin?lng=es")
 
-time.sleep(2)
+driver.implicitly_wait(10)
 
-# Buscar elementos
-email = driver.find_element(By.ID, "email")
-password = driver.find_element(By.ID, "password")
+#Iniciar sesión
+driver.find_element(By.ID, "email").send_keys("tomas.granados@gmail.com")
+driver.find_element(By.ID, "password").send_keys("qaengineer")
+driver.find_element(By.CLASS_NAME, "auth-form__button").click()
 
-# Probar el atributo placeholder para cada elemento
-assert email.get_attribute('placeholder') == 'Correo electrónico', f"Expected 'Correo electrónico', but got '{email.get_attribute('placeholder')}'"
-assert password.get_attribute('placeholder') == 'Contraseña', f"Expected 'Contraseña', but got '{password.get_attribute('placeholder')}'"
-print("Pruebas exitosas!")
+# Agregar una espera explícita para que se cargue el feed
+WebDriverWait(driver, 10).until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, "places__list")))
 
-# Cerrar el navegador
+# Buscar la tarjeta y desplazarla a la vista
+element = driver.find_element(By.CSS_SELECTOR, ".places__item")
+driver.execute_script("arguments[0].scrollIntoView();", element)
+
 driver.quit()
